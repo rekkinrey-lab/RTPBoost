@@ -1,0 +1,39 @@
+# RTPBoost configuration
+#
+# What it does: right after a long-distance teleport (like /rtp), the player's
+# chunk "send distance" is dropped to a small value and then raised one step at
+# a time back to normal. This spreads the chunk generation/sending burst over
+# many seconds instead of hitting the CPU all at once.
+# Each step is skipped while the server is busy (high MSPT or high CPU).
+
+# Teleport causes that trigger the ramp. BetterRTP teleports with PLUGIN
+# (or COMMAND on some setups). Other valid values: ENDER_PEARL, NETHER_PORTAL,
+# END_PORTAL, END_GATEWAY, CHORUS_FRUIT, SPECTATE, UNKNOWN, ...
+causes:
+  - PLUGIN
+  - COMMAND
+
+# Teleports shorter than this many blocks (same world) are ignored.
+# Cross-world teleports always count.
+min-distance: 256
+
+ramp:
+  # View distance (in chunks) used right after the teleport.
+  start-view-distance: 3
+  # Chunks added per step.
+  step: 1
+  # Ticks between steps (20 ticks = 1 second).
+  step-interval-ticks: 40
+  # How often the server health is checked (ticks).
+  check-interval-ticks: 10
+  # If the server stays "busy" this long, ramp up anyway so players are
+  # never stuck at a tiny view distance.
+  max-stall-seconds: 30
+
+# A ramp step only happens while BOTH of these are true.
+health:
+  # Average tick time in milliseconds (50 = server is at its limit).
+  max-mspt: 40
+  # Share of total CPU used by the server process, 0.0 - 1.0.
+  # (0.80 = 80% of all cores combined, NOT the 190% style number from top.)
+  max-cpu: 0.80

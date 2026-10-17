@@ -1,0 +1,18 @@
+name: RTPBoost
+version: '${project.version}'
+main: dev.rtpboost.RTPBoost
+api-version: '1.21'
+description: Smooths out the CPU spike after long-distance teleports (BetterRTP etc.) by ramping chunk sending up gradually.
+softdepend: [BetterRTP]
+commands:
+  rtpboost:
+    description: RTPBoost admin command
+    usage: /rtpboost <status|reload>
+    permission: rtpboost.admin
+permissions:
+  rtpboost.admin:
+    description: Use /rtpboost
+    default: op
+  rtpboost.bypass:
+    description: Skip the view-distance ramp after teleports
+    default: false
